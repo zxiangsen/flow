@@ -1,0 +1,102 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>mp~0214</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+	<meta content="yes" name="apple-mobile-web-app-capable" />
+	<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+	<meta content="telephone=no" name="format-detection" />
+<!--
+	<link href="css/styleindexA.css" rel="stylesheet" type="text/css" />
+-->
+
+</head>
+<body>
+<section class="aui-flexView">
+	<header class="aui-navBar aui-navBar-fixed b-line">
+		<a href="javascript:;" class="aui-navBar-item">
+			<i class="icon icon-return"></i>
+		</a>
+		<div class="aui-center">
+			<span class="aui-center-title">信用卡</span>
+			<button class="btn btn_primary" id="checkJsApi">checkJsApi</button>
+		</div>
+		<a href="javascript:;" class="aui-navBar-item">
+			<i class="icon icon-sys"></i>
+		</a>
+	</header>
+	<section class="aui-scrollView">
+		<div class="aui-credit-list">
+			<a href="javascript:;" class="aui-flex">
+				<div class="aui-credit-img">
+					<img src="https://zxs2018.oss-cn-beijing.aliyuncs.com/Novel/dushi.jpg" alt="">
+				</div>
+				<div class="aui-flex-box">
+					<h1>浦发简约白金卡</h1>
+					<p>免年费</p>
+					<p>消费满额享红包</p>
+					<p>指定酒店自助餐买一赠一</p>
+					<button>立即办卡</button>
+				</div>
+			</a>
+		</div>
+	</section>
+</section>
+<!--
+<script src="https://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+-->
+<script src="https://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script type="text/javascript" language=JavaScript charset="UTF-8">
+
+	 wx.config({
+		 debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		 appId: 'wxef8b0d3bb94d0fdd', // 必填，公众号的唯一标识
+		 timestamp: 1554186347, // 必填，生成签名的时间戳
+		 nonceStr: '6691194f-69f0-413c-bb43-c91738e62cf5', // 必填，生成签名的随机串
+		 signature: '2f5086eab6267d95687b953c79dab2e93db3a899',// 必填，签名，见附录1
+		 jsApiList: ["checkJsApi", "updateAppMessageShareData", "updateTimelineShareData"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+	 });
+
+	 wx.ready(function () {
+	 	console.log(552);
+		 //自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+		 wx.updateAppMessageShareData({
+			 title: '九零一族', // 分享标题
+			 desc: '测试1', // 分享描述
+			 link: 'http://www.w0ejp2u.top/mp/indexA3.html', // 分享链接
+			 imgUrl: 'https://zxs2018.oss-cn-beijing.aliyuncs.com/Novel/dushi.jpg',
+			 success: function (res) {
+				 alert('已分享');
+			 },
+			 cancel: function (res) {
+				 alert('已取消');
+			 },
+			 fail: function (res) {
+				 alert(JSON.stringify(res));
+			 }
+		 });
+		 //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+		 wx.updateTimelineShareData({
+			 title: '九零一族', // 分享标题
+			 link: 'http://www.w0ejp2u.top/mp/indexA3.html', // 分享链接
+			 imgUrl: 'https://zxs2018.oss-cn-beijing.aliyuncs.com/Novel/dushi.jpg', // 分享图标
+			 type: '', // 分享类型,music、video或link，不填默认为link
+			 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+			 success: function () {
+				 // 用户确认分享后执行的回调函数
+				 alert("分享");
+			 },
+			 cancel: function () {
+				 // 用户取消分享后执行的回调函数
+				 alert("取消分享");
+			 }
+		 });
+	 });
+
+</script>
+
+</body>
+
+</html>

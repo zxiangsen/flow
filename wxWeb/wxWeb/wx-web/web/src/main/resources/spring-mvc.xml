@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+    <!-- 提供@Controller注解，以及请求URL的映射，json自动转换等功能 -->
+    <!-- <mvc:annotation-driven /> 会自动注册DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter 两个bean,
+            是spring MVC为@Controllers分发请求所必须的 -->
+    <!--<mvc:annotation-driven/>-->
+
+    <mvc:annotation-driven >
+        <mvc:message-converters>
+            <!-- StringHttpMessageConverter类对string参数进行处理 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <!-- 通过StringHttpMessageConverter构造器设置默认编码 -->
+                <constructor-arg index="0" value="utf-8" />
+                <!-- 设置支持类型 -->
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+            <!-- MappingJackson2HttpMessageConverter 默认对所有json进行转换 -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                    <property name="objectMapper">
+                    <bean class="com.douya.config.MyObjectMapper">
+                        <!--<property name="dateFormat">
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+                            </bean>
+                        </property>-->
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 扫描@Controller注解 -->
+    <!-- SpringMVC容器不仅仅扫描并注册带有@Controller注解的Bean，而且还扫描并注册了带有@Component的子注解@Service、@Reposity的Bean。
+        因为use-default-filters默认为true -->
+    <!-- SpringMVC容器会把service、dao层的bean重新加载，从而造成新加载的bean覆盖了老的bean，但事务的AOP代理没有配置在spring-mvc.xml配置文件中，造成事务失效。解决办法是：
+        在spring-mvc.xml配置文件中的context:component-scan标签中使用use-default-filters=“false”禁用掉默认的行为。 -->
+    <context:component-scan base-package="com.douya.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <!--将静态资源交由默认的servlet处理-->
+    <mvc:default-servlet-handler />
+    <!-- 配置swagger静态资源不被拦截，无自定义拦截器的情况下 -->
+    <!-- 默认web配置DispatcherServlet拦截 / 所有请求，mvc:resources配置则告诉springMVC检查到静态资源时交回web服务器处理 -->
+
+    <!-- 加载swagger配置 -->
+    <bean class="com.douya.config.SwaggerConfig"/>
+
+    <!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
+    <!-- 配置视图解析器，如何报handler方法返回值解析为实际的物理视图 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="com.douya.utils.HtmlResourceView"/>
+        <property name="order" value="0" />
+        <property name="prefix" value="/WEB-INF/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <bean id="htmlviewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="com.douya.utils.HtmlResourceView"/>
+        <property name="order" value="1" />
+     <!--   <property name="prefix" value="/WEB-INF/"/>-->
+        <property name="suffix" value=".html" />
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+    </bean>
+
+
+    <!--&lt;!&ndash; 视图解析器1:html视图解析器 必须先配置freemarkerConfig,注意html是没有prefix前缀属性的 &ndash;&gt;-->
+    <!--<bean id="htmlviewResolver"-->
+          <!--class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">-->
+        <!--<property name="prefix" value="/WEB-INF/" />-->
+        <!--<property name="suffix" value=".html" />-->
+        <!--<property name="order" value="0" />-->
+        <!--<property name="contentType" value="text/html;charset=UTF-8" />-->
+    <!--</bean>-->
+    <!--&lt;!&ndash; 视图解析器2:jsp视图解析器 &ndash;&gt;-->
+    <!--<bean id="jspviewResolver"-->
+          <!--class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+        <!--<property name="prefix" value="/WEB-INF/" />-->
+        <!--<property name="suffix" value=".html" />-->
+        <!--<property name="order" value="0" />-->
+        <!--<property name="contentType" value="text/html;charset=UTF-8" />-->
+    <!--</bean>-->
+    <!-- 登录token拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- 配置拦截所有路径 -->
+            <mvc:mapping path="/**/*"/>
+            <!--! 测试接口页面 -->
+            <!-- 配置静态资源不被拦截 -->
+            <mvc:exclude-mapping path="/WEB-INF/**"/>
+            <mvc:exclude-mapping path="/**/css/**"/>
+            <mvc:exclude-mapping path="/**/scss/**"/>
+            <mvc:exclude-mapping path="/**/img/**"/>
+            <mvc:exclude-mapping path="/**/images/**"/>
+            <mvc:exclude-mapping path="/**/js/**"/>
+            <mvc:exclude-mapping path="/**/music/**"/>
+            <mvc:exclude-mapping path="/**/video/**"/>
+
+            <!-- 接口页面 -->
+            <!--app 接口 不拦截 -->
+            <mvc:exclude-mapping path="/appUser/**"/>
+            <mvc:exclude-mapping path="/appOrder/**"/>
+            <!-- web -->
+            <mvc:exclude-mapping path="/**/*.js"/>
+            <!-- 登录验证 -->
+            <mvc:exclude-mapping path="/webemployee/login"/>
+            <mvc:exclude-mapping path="/webemployee/login.action"/>
+
+            <mvc:exclude-mapping path="/webemployee/getphonecode.action"/>
+            <mvc:exclude-mapping path="/webemployee/adduser.action"/>
+
+
+            <mvc:exclude-mapping path="/webplatform/login"/>
+            <mvc:exclude-mapping path="/webplatform/login.action"/>
+            <!-- 首页 -->
+            <mvc:exclude-mapping path="/login.html"/>
+            <mvc:exclude-mapping path="/register.html"/>
+            <mvc:exclude-mapping path="/download.html"/>
+            <mvc:exclude-mapping path="/loginc.html"/>
+            <bean class="com.douya.config.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+	<!--<mvc:interceptors>
+		<bean class="com.douya.config.LoginInterceptor"/>
+	</mvc:interceptors>-->
+
+    <!-- 文件上传配置 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 上传文件大小限制为1M，1*1024*1024 -->
+        <!--<property name="maxUploadSize" value="1048577"/>-->
+        <!-- 内存中的最大值 -->
+        <property name="maxInMemorySize" value="4096"/>
+    </bean>
+
+</beans>

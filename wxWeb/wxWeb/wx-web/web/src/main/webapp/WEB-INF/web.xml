@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+	<welcome-file-list>
+		<welcome-file>login.html</welcome-file>
+		<welcome-file>register.html</welcome-file>
+		<welcome-file>download.html</welcome-file>
+	</welcome-file-list>
+  	<!-- 加载spring配置 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-mybatis.xml</param-value>
+	</context-param>
+
+	<!-- session监听 -->
+	<listener>
+		<listener-class>com.douya.servlet.MySessionListener</listener-class>
+	</listener>
+	<!-- 加载日志文件 -->
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:log4j.properties</param-value>
+    </context-param>
+
+    <!-- 每6秒扫描配置文件的变化
+    <context-param>
+        <param-name>log4jRefreshInterval</param-name>
+        <param-value>6000</param-value>
+    </context-param>-->
+    <!-- spring框架默认定义webAppRootKey的值为webapp.root，若不配此参数默认值就是webapp.root（因此，此参数可选配） -->
+    <!--<context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>home</param-value>
+    </context-param>-->
+
+	<!-- springMVC配置 -->
+    <servlet>
+        <servlet-name>ssm</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-mvc.xml</param-value>
+        </init-param>
+        <!-- 大于或等于0时，表示容器在启动时加载该servlet，值越小优先级越高，小于0或未设置时表示选择该servlet时才会去初始化 -->
+        <load-on-startup>1</load-on-startup>
+        <!-- 开启servlet的异步处理，不必等待阻塞 -->
+        <async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ssm</servlet-name>
+		<!-- 此处可以可以配置成*.do，对应struts的后缀习惯 -->
+		<!-- 会拦截所有的请求，包括静态资源 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!--<filter>
+		<filter-name>myDesRequestFilter</filter-name>
+		<filter-class>com.douya.config.MyDesRequestFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>myDesRequestFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>-->
+
+	<!-- 线程启动监听类别 12.25  -->
+<!--	<servlet>
+		　　<servlet-name>event-collector</servlet-name>
+		　　<servlet-class>com.douya.servlet.WeldingListener</servlet-class>
+		　　<load-on-startup>5</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		　　<servlet-name>event-collector</servlet-name>
+		　　<url-pattern>/event-collect</url-pattern>
+	</servlet-mapping>-->
+
+	<servlet>
+		<servlet-name>HttpServ</servlet-name>
+		<servlet-class>com.douya.servlet.WeChat</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>HttpServ</servlet-name>
+		<url-pattern>/token</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- 解决post乱码问题的过滤器 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+</web-app>

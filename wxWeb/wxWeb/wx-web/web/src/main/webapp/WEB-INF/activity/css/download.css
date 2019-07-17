@@ -1,0 +1,119 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: "微软雅黑"; }
+
+.clear {
+  clear: both; }
+
+.wx {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll; }
+  .wx .wx-img {
+    padding-top: 2.9rem;
+    margin: 0 auto;
+    width: 4.375rem;
+    height: 4.375rem; }
+    .wx .wx-img img {
+      width: 100%;
+      height: 100%; }
+  .wx .wx-name {
+    width: 100%;
+    margin-top: 0.45rem; }
+    .wx .wx-name h1 {
+      font-size: 0.825rem;
+      line-height: 1.125rem;
+      text-align: center;
+      letter-spacing: 0.075rem; }
+    .wx .wx-name p {
+      font-size: 0.425rem;
+      line-height: 0.65rem;
+      text-align: center;
+      color: #666666; }
+  .wx .wx-button {
+    padding-top: 0.55rem;
+    width: 100%;
+    height: 1.6rem;
+    margin: 0 auto;
+    text-align: center; }
+    .wx .wx-button button {
+      margin: 0 auto;
+      text-align: center;
+      width: 4.075rem;
+      height: 100%;
+      font-size: 0.9rem;
+      border-radius: 0.15rem;
+      color: white;
+      background: #53a3e5;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      border: none; }
+  .wx .brief {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 0.55rem; }
+    .wx .brief h2 {
+      font-size: 0.6rem;
+      line-height: 1.075rem; }
+    .wx .brief p {
+      font-size: 0.5rem;
+      color: #8c8c8c;
+      line-height: 0.7rem; }
+  .wx .message {
+    padding-top: 0.175rem;
+    width: 90%;
+    margin: 0 auto; }
+    .wx .message h2 {
+      font-size: 0.6rem;
+      line-height: vw(43); }
+    .wx .message .message-p {
+      width: 100%; }
+      .wx .message .message-p p {
+        display: inline-block;
+        width: 2.425rem;
+        text-align: left;
+        font-size: 0.5rem;
+        color: #8c8c8c;
+        line-height: 0.825rem; }
+      .wx .message .message-p p:last-child {
+        width: 1.525rem;
+        text-align: left; }
+    .wx .message .message-p:last-child p:last-child {
+      width: 10rem; }
+  .wx .wx-liu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+    .wx .wx-liu .liu-bgr {
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: .8; }
+    .wx .wx-liu .liu-jian {
+      position: absolute;
+      top: 0.325rem;
+      right: 0;
+      width: 100%; }
+      .wx .wx-liu .liu-jian img {
+        float: right;
+        width: 10rem;
+        height: 10rem; }
+    .wx .wx-liu .jian-font {
+      position: absolute;
+      top: 10.25rem;
+      right: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+      letter-spacing: 0.125rem;
+      color: white;
+      font-weight: bold; }
+
+/*# sourceMappingURL=download.css.map */
